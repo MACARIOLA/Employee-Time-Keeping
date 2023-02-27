@@ -1,0 +1,52 @@
+using System;
+
+namespace Finalproject
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            TimeSpan WS = new TimeSpan(8, 0, 0); //workking start time span
+            TimeSpan WE = new TimeSpan(17, 0, 0);//workking end  time span
+            TimeSpan LB = new TimeSpan(0, 30, 0);//lunch break time span
+            TimeSpan GP = new TimeSpan(0, 30, 0);// grace peroid ttime span
+
+            // user input 
+            Console.Write("Enter Time-in (HH:mm:ss):");
+            TimeSpan TI = TimeSpan.Parse(Console.ReadLine());
+            Console.Write("Enter Time-out(HH:mm:ss):");
+            TimeSpan TO = TimeSpan.Parse(Console.ReadLine());
+
+            //Calulate Total working hours 
+            TimeSpan TH = TO - TI;
+            TH -= LB;
+
+            // Check employee if late 
+            TimeSpan WSG = WS + GP;
+            bool IL = (TI > WSG);
+
+            // late time
+            TimeSpan LT = IL ? TI - WSG : TimeSpan.Zero;
+
+            // Regular hours
+            TimeSpan RH = IL ? TH - LT : TH;
+
+            // over time
+            TimeSpan ReH = WE - WS - LB; //required hours
+            TimeSpan OT = (TH > ReH) ? TH - ReH : TimeSpan.Zero; //over time
+            TimeSpan UT = (TH < ReH) ? ReH - TH : TimeSpan.Zero;//undertime
+
+            // Print results
+            Console.WriteLine("Total working hours: {0}", TH);
+            Console.WriteLine("Regular hours: {0}", RH);
+            Console.WriteLine("Late time: {0}", LT);
+            Console.WriteLine("Overtime: {0}", OT);
+            Console.WriteLine("Undertime: {0}", UT);
+
+           
+
+
+
+        }
+    }
+}
